@@ -38,6 +38,6 @@
     }
 
     const navigate = (id) => {
-        window.location = id;
+        window.location = id + "?nocache=" + (new Date()).getTime();
     }
 </script>

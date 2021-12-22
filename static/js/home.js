@@ -91,7 +91,7 @@ const joinLeague = () => {
     }
     $.post("/joinLeague", data, (r) => {
         closePromt();
-        location.reload();
+        location.reload(true);
     }).fail((r) => {
         console.log(r);
     })
@@ -99,7 +99,7 @@ const joinLeague = () => {
 
 const leaveLeague = () => {
     $.post("/leaveLeague", (r) => {
-        location.reload();
+        location.reload(true);
     }).fail(() => {
         console.log("Leaving failed.");
     })

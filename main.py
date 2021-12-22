@@ -285,7 +285,7 @@ def buy():
         user_data = queryFirst("SELECT * FROM users WHERE username = '{}'".format(session.get('username')))
         msft = yf.Ticker(data['ticker'][0])
         a = msft.info
-        totalPrice = a['regularMarketPrice'] * int(data['amount'][0])
+        totalPrice = get_current_price(data['ticker'][0]) * int(data['amount'][0])
         if totalPrice > user_data[4]:
             transactionOK = False
         # Check if timer allows for transaction when it is implemented here

@@ -104,5 +104,8 @@ const leaveLeague = () => {
         console.log("Leaving failed.");
     })
 }
+setTimeout(() => {
+    getLeague();
+},2000)
 
-getLeague();
+getWallet();

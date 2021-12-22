@@ -202,6 +202,11 @@ nav section {
     z-index: 30000;
 }
 
+#toggle-icon:hover {
+    cursor: pointer;
+    opacity: 0.8;
+}
+
 @media only screen and (max-width: 1100px) {
     #menu {
         width: 40%;

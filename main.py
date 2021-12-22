@@ -2,6 +2,7 @@ from flask import Flask, render_template, session, request, url_for, redirect
 from flaskext.mysql import MySQL
 import yfinance as yf
 import json
+import base64
 
 
 
@@ -9,6 +10,7 @@ import json
 
 app = Flask(__name__)
 app.secret_key = "TEMPORARY"
+salt = "ojdj9229u22da"
 #CONFIG
 app.config['MYSQL_DATABASE_USER'] = 'wsc_admin'
 app.config['MYSQL_DATABASE_PASSWORD'] = 'Adminpass00##'
@@ -168,7 +170,7 @@ def index():
         match = False
 
         for x in sql_results:
-            if data['username'][0] == x[1] and data['password'][0] == x[3]:
+            if data['username'][0] == x[1] and base64.b64encode((data['password'][0]+salt).encode()).decode('utf-8') == x[3]:
                 match = True
 
         if match:
@@ -210,11 +212,12 @@ def register():
             error = "Username can not contain special characters."
             return render_template("register.html", _GLOBALS=_GLOBALS, error=error)
         
-
+        hash = base64.b64encode((data['password'][0]+salt).encode()).decode('utf-8')
+        print(hash)
         d = {
             'username': escapeString(data['username'][0]),
             'email': escapeString(data['email'][0]),
-            'password': escapeString(data['password'][0])
+            'password': hash
         }
 
 

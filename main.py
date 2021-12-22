@@ -297,6 +297,8 @@ def buy():
             newWallet = user_data[4] - totalPrice
             update("UPDATE users SET wallet = {} WHERE id = {}".format(newWallet, user_data[0]))
             return json.dumps({'success':True}), 200, {'ContentType':'application/json'}
+        else:
+            return json.dumps({'success':False}), 403, {'ContentType':'application/json'}
     else:
         return json.dumps({'success':False}), 403, {'ContentType':'application/json'}
 

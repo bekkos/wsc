@@ -5,7 +5,7 @@ import json
 
 
 
-def main():
+def __main__():
 
     app = Flask(__name__)
     app.secret_key = "TEMPORARY"

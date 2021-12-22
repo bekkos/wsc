@@ -1,0 +1,22 @@
+{% extends 'layout.html' %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+{% endblock %}
+
+{% block body %}
+<div class="wrapper bg-primary">
+<h2 class="title text-primary tsize-5">{{_GLOBALS.title}}</h2>
+<form action="#" method="post">
+    <input class="input-field" type="text" name="username"  placeholder="Username">
+    <input class="input-field" type="password" name="password"  placeholder="Password">
+    <input class="form-button" type="submit" value="Log in">
+    <br>
+    <a href="/register">Register</a>
+    {% if error %}
+        <br><br>
+        <p class="text-primary">{{error}}</p>
+    {% endif %}
+</form>
+</div>
+{% endblock %}

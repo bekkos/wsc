@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/search.css') }}">
+{% endblock %}
+
+
+{% block body %}
+{% include 'nav.html' %}
+<div class="wrapper bg-primary">
+    <div class="search">
+        <input type="text" placeholder="Search... (e.g 'TSLA')" id="search-box" placeholder="Search...">
+        <button class="button button-primary" onclick="search();">Search</button>
+    </div>
+    <div class="search-result" id="search-result">
+        
+    </div>
+    <div id="noti-box"></div>
+</div>
+
+
+<script src="{{ url_for('static', filename='js/search.js') }}"></script>
+{% endblock %}

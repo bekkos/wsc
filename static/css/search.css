@@ -1,0 +1,60 @@
+.wrapper {
+    width: 100%;
+    height: auto;
+
+}
+
+.search {
+    width: 50%;
+    height: 300px;
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+input {
+    width: 30%;
+    font-size:1.5rem;
+    border-radius: 5px;
+    padding: 5px;
+    margin-right: 10px;
+}
+
+.search-result {
+    text-align: center;
+}
+
+.display {
+    width: 80%;
+    height: 200px;
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    flex-direction: column;
+}
+
+section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+
+@keyframes fadeIn {
+    0% {opacity: 0}
+    100% {opacity: 1}
+}
+
+@keyframes visible {
+    0% {opacity: 1}
+    100% {opacity: 1}
+}
+
+@keyframes fadeOut {
+    0% {opacity: 1}
+    100% {opacity: 0}
+}

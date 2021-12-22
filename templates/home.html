@@ -1,0 +1,55 @@
+{% extends 'layout.html'%}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+{% endblock %}
+
+{% block body %}
+{% include 'nav.html' %}
+<div class="wrapper bg-primary">
+    <div class="container-left">
+        <h2 class="tsize-2 text-primary">Active Calls</h2>
+        <div class="item-container">
+             {% if activeStocks %}
+                {% for a in activeStocks %}
+                    <div class="item">
+                        <h2 style="width: 100%;" class="title tsize-2 text-primary">{{a[5]}}</h2>
+                        <div class="left">
+                            <section>
+                                <p class="tsize-1 text-primary">Amount: {{a[3]}}</p>
+                                <p class="tsize-1 text-primary">Price per @ buy: ${{a[4]}}</p>
+                                <p class="tsize-1 text-primary">Total price per @ buy: ${{a[4]|int * a[3]|int}}</p>
+                                {% for b in updatedStockData %}
+                                    {% if b['ticker'] == a[2] %}
+                                        <p class="tsize-1 text-primary">Current price per: ${{"%.2f"|format(b['price'])}}</p>
+                                        <br>
+                                        <p class="tsize-1 text-primary">Profit: ${{"%.2f"|format(b['price']|float * a[3] - a[4]|float * a[3]|float)}}</p>
+                                    {% endif %}
+                                {% endfor %}
+                            </section>
+                        </div>
+                        <div class="right">
+                            <button class="button button-danger text-primary" onclick="sell({{ a[0] }});">SELL</button>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+            <p class="text-primary tsize-1">You have no active stock. When you buy some from the buy menu they will be displayed here.</p>
+            {% endif %}
+        </div>
+    </div>
+    <div class="container-right">
+        <h2 class="tsize-2 text-primary">League</h2>
+        <div class="item-container">
+            <div class="item">
+                
+            </div>
+            <div class="item">
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+<script defer src="{{ url_for('static', filename='js/home.js') }}"></script>
+{% endblock %}

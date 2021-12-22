@@ -343,7 +343,8 @@ def searchQuery():
 @app.route('/getWallet', methods=['POST'])
 def getWallet():
     if session.get('logged_in'):
-        return json.dumps({'wallet': getWalletFromDB(session.get('username'))}), 200, {'ContentType':'application/json'}
+        wallet =  getWalletFromDB(session.get('username'))
+        return json.dumps({'wallet': wallet}), 200, {'ContentType':'application/json'}
     else:
         return json.dumps({'success': False}), 403, {'ContentType':'application/json'}
 

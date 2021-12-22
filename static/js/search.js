@@ -83,7 +83,9 @@ const buy = (ticker) => {
         console.log("SUCCESS!");
         notification("Transaction Successful.", 0);
         enableInput();
-        getWallet();
+        setTimeout(() => {
+            getWallet();
+        },1000)
     }).fail(() => {
         console.log("FAIL!");
         notification("Transaction Failed.", 1);

@@ -78,6 +78,31 @@ def get_current_price(symbol):
     return todays_data['Close'][0]
 
 
+def getTeamData(username):
+    userId = queryFirst("SELECT team_id FROM users WHERE username = '{}'".format(username))
+    print(userId)
+    if userId[0] is None or userId[0] == -1:
+        return False
+    d = []
+    usersInTeam = query("SELECT * FROM users WHERE team_id = {}".format(userId[0]))
+    print(usersInTeam)
+    for x in usersInTeam:
+        userTotalScore = 0
+        userTotalScore += int(x[4])
+        print(x[0])
+        usersActiveStock = query("SELECT * FROM active_stock WHERE user_id = {}".format(x[0]))
+        for s in usersActiveStock:
+            userTotalScore += (int(s[3]) * float(get_current_price(s[2])))
+        
+        d.append({
+            'username': x[1],
+            'score': int(userTotalScore)
+        })
+
+    data = sorted(d, key=lambda d: d['score'], reverse=True) 
+
+    return data
+
 def query(sql):
     conn.ping()
     cursor = conn.cursor()
@@ -225,9 +250,13 @@ def search():
 
 
 
-@app.route('/test')
-def test():
-    return render_template('buy.html')
+@app.route('/getTeam', methods=['POST'])
+def getTeam():
+    if session.get('logged_in'):
+        d = getTeamData(session.get('username'))
+        if d == False:
+            return json.dumps({'Error': 'No Team Found.'}), 404, {'ContentType':'application/json'}
+        return json.dumps(d)
 
 @app.route('/logout')
 def logout():
@@ -311,3 +340,28 @@ def getWallet():
         return json.dumps({'wallet': getWalletFromDB(session.get('username'))}), 200, {'ContentType':'application/json'}
     else:
         return json.dumps({'success': False}), 403, {'ContentType':'application/json'}
+
+@app.route("/joinLeague", methods=['POST'])
+def joinLeague():
+    if session.get('logged_in'):
+        data = request.form.to_dict(flat=False)
+        joinCode = data['joinCode'][0]
+        team_id = queryFirst("SELECT id from leagues WHERE join_code='{}'".format(joinCode))
+        if team_id[0] is None:
+            return json.dumps({'error':'Incorrect code.'}), 404 , {'ContentType':'application/json'}
+        user = queryFirst("SELECT * FROM users WHERE username = '{}'".format(session.get('username')))
+        if user[5] is None or user[5] == -1:
+            print(user[0])
+            print(team_id)
+            update("UPDATE users SET team_id = {} WHERE id = {}".format(team_id[0], user[0]))
+            return json.dumps({'success':'Successfully joined league.'}), 200 , {'ContentType':'application/json'}
+        else:
+            return json.dumps({'error': 'Already in a league.'}), 403, {'ContentType':'application/json'}
+
+@app.route("/leaveLeague", methods=['POST'])
+def leaveLeague():
+    if session.get('logged_in'):
+        update("UPDATE users SET team_id = '{}' WHERE username = '{}'".format(-1, session.get('username')))
+        return json.dumps({'success':'Left team'}), 200, {'ContentType':'application/json'}
+    else:
+        return json.dumps({'error':'Illegal Accesspoint'}), 403, {'ContentType':'application/json'}

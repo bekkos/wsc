@@ -68,7 +68,7 @@ const openPromt = (state) => {
         `;
     } else {
         ipc.innerHTML = `
-        <h2 class="text-primary tsize-2">Join League</h2>
+        <h2 class="text-primary tsize-2">Create League</h2>
         <br>
         <input type="text" class="tsize-1-5" id="leagueName" placeholder="Enter league name">
         <br>
@@ -97,6 +97,19 @@ const joinLeague = () => {
     })
 }
 
+const createLeague = () => {
+    let leagueName = document.getElementById("leagueName").value;
+    data = {
+        'name': leagueName
+    }
+    $.post("/createLeague", data, (r) => {
+        closePromt();
+        location.reload(true);
+    }).fail((r) => {
+        console.log(r);
+    })
+}
+
 const leaveLeague = () => {
     $.post("/leaveLeague", (r) => {
         location.reload(true);
@@ -104,8 +117,24 @@ const leaveLeague = () => {
         console.log("Leaving failed.");
     })
 }
+
+const getLeagueCode = () => {
+    $.post("/getLeagueCode", (r) => {
+        const response = jQuery.parseJSON(r);
+        document.getElementById("jc").innerText = response['code'];
+        document.getElementById("league-title").innerText = response['name'];
+    
+    }).failed(() => {
+        console.log("getLeagueCode Error");
+    })
+}
+
 setTimeout(() => {
     getLeague();
 },2000)
+
+setTimeout(() => {
+getLeagueCode();
+},1000)
 
 getWallet();

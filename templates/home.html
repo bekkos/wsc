@@ -13,7 +13,7 @@
              {% if activeStocks %}
                 {% for a in activeStocks %}
                     <div class="item stock-item">
-                        <h2 style="" class="title tsize-2 text-primary">{{a[5]}}</h2>
+                        <h2 class="title tsize-2 text-primary">{{a[5]}}</h2>
                         <div class="left">
                             <section>
                                 <p class="tsize-1 text-primary">Amount: {{a[3]}}</p>
@@ -40,6 +40,7 @@
     </div>
     <div class="container-right" id="container-right">
         <h2 class="tsize-2 text-primary" id="league-title">League</h2>
+        <p id="jc" class="text-primary" style="width: 100%; text-align: center;">Code: </z></p>
         <div class="item-container" id="item-container">
             <div class="lds-facebook"><div></div><div></div><div></div></div>
         </div>

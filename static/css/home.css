@@ -47,11 +47,17 @@
     width: 100%;
     height: auto;
     margin:1vh 0;
+    
     text-align: center;
     display: flex;
     justify-content: space-around;
     align-items: center;
     flex-wrap: wrap;
+    padding: 15px 0px;
+}
+
+.stock-item {
+    background-color: #263849;
 }
 
 .left {
@@ -137,6 +143,7 @@ input {
         flex-direction: column;
         min-height: 100%;
         height: auto;
+        margin-top: 5vh;
     }
     .container-left, .container-right {
         width: 80%;

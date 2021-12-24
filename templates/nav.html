@@ -3,6 +3,7 @@
     <section>
         <h2 class="title tsize-2 text-primary">WALLSTREET CAPITALIST</h2>
         <p class="text-primary" id="wallet">Wallet: $0</p>
+        <p class="text-primary" id="time"></p>
     </section>
 </nav>
 <img onclick="toggle();" id="toggle-icon" src="{{ url_for('static', filename='media/mtoggle.png') }}"  id="toggle">
@@ -40,4 +41,32 @@
     const navigate = (id) => {
         window.location = id + "?nocache=" + (new Date()).getTime();
     }
+
+    (function() {
+        var start = new Date;
+        start.setHours(16, 30, 0); // 11pm
+
+        function pad(num) {
+        return ("0" + parseInt(num)).substr(-2);
+        }
+
+        function tick() {
+        var now = new Date;
+        if (now > start) { // too late, go to tomorrow
+            document.getElementById('time').innerHTML = "Markets are open.";
+            start.setDate(start.getDate() + 1);
+            return;
+        }
+        var remain = ((start - now) / 1000);
+        var hh = pad((remain / 60 / 60) % 60);
+        var mm = pad((remain / 60) % 60);
+        var ss = pad(remain % 60);
+        document.getElementById('time').innerHTML =
+            "Markets open in: " + 
+            hh + ":" + mm + ":" + ss;
+        setTimeout(tick, 1000);
+        }
+
+        document.addEventListener('DOMContentLoaded', tick);
+})();
 </script>

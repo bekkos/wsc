@@ -298,6 +298,8 @@ def buy():
     if session.get('logged_in'):
         transactionOK = True
         data = request.form.to_dict(flat=False)
+        if data['amount'][0] <= 0:
+            return json.dumps({'success':False}), 403, {'ContentType':'application/json'}
         user_data = queryFirst("SELECT * FROM users WHERE username = '{}'".format(session.get('username')))
         msft = yf.Ticker(data['ticker'][0])
         a = msft.info

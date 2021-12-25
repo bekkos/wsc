@@ -70,6 +70,12 @@ nav section {
     cursor: pointer;
 }
 
+#vc {
+    position: fixed;
+    bottom: 20;
+    left: 20;
+}
+
 /* TEXT */
 .title {
     font-family: 'Bebas Neue', cursive !important;

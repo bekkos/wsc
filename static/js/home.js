@@ -26,7 +26,7 @@ const getLeague = () => {
         response.forEach((e) => {
             cr.innerHTML += `
             <div class="item" style="text-align: left; justify-content: space-between !important; width: 100%;">
-                <p class="text-primary">${placement}.   ${e['username']}</p>
+                <p class="text-primary">${placement}.   <a href="/user?user=${e['username']}">${e['username']}</a></p>
                 <p class="text-primary">Score: ${e['score']}</p>
             </div>
             `;
@@ -106,9 +106,13 @@ const createLeague = () => {
         closePromt();
         location.reload(true);
     }).fail((r) => {
-        console.log(r);
+        console.log(r['responseText']);
+        const response = jQuery.parseJSON(r['responseText']);
+        console.log(response['error']);
+        notification("Error: " + response['error'], 1);
     })
 }
+
 
 const leaveLeague = () => {
     $.post("/leaveLeague", (r) => {
@@ -121,7 +125,7 @@ const leaveLeague = () => {
 const getLeagueCode = () => {
     $.post("/getLeagueCode", (r) => {
         const response = jQuery.parseJSON(r);
-        document.getElementById("jc").innerText = response['code'];
+        document.getElementById("jc").innerText = "Code: " + response['code'];
         document.getElementById("league-title").innerText = response['name'];
     
     }).failed(() => {

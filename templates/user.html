@@ -1,0 +1,37 @@
+{% extends 'layout.html'%}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/user.css') }}">
+{% endblock %}
+
+{% block body %}
+{%include 'nav.html'%}
+<div class="wrapper">
+    <div class="top">
+        <h1 class="title text-primary">{{user[1]}}</h1>
+    </div>
+    <div class="bottom">
+    {% if activeStocks %}
+        {% for a in activeStocks %}
+            <div class="item stock-item">
+                <h2 class="title tsize-2 text-primary" style="width: 200px;">{{a[5]}}</h2>
+                <section>
+                    <p class="tsize-1 text-primary">Amount: {{a[3]}}</p>
+                    <p class="tsize-1 text-primary">Price per @ buy: ${{a[4]}}</p>
+                    <p class="tsize-1 text-primary">Total price per @ buy: ${{a[4]|int * a[3]|int}}</p>
+                    {% for b in updatedStockData %}
+                        {% if b['ticker'] == a[2] %}
+                            <p class="tsize-1 text-primary">Current price per: ${{"%.2f"|format(b['price'])}}</p>
+                            <br>
+                            <p class="tsize-1 text-primary">Profit: ${{"%.2f"|format(b['price']|float * a[3] - a[4]|float * a[3]|float)}}</p>
+                        {% endif %}
+                    {% endfor %}
+                </section>
+            </div>
+        {% endfor %}
+        {% else %}
+            <p class="text-primary tsize-1">This user has no active stock. When they buy some, it will be displayed here.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

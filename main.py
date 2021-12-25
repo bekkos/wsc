@@ -29,8 +29,8 @@ _GLOBALS = {
 #DB
 mysql = MySQL()
 mysql.init_app(app)
-conn = mysql.connect()
-cursor = conn.cursor()
+
+
 
 
 
@@ -111,42 +111,54 @@ def getTeamData(username):
     return data
 
 def query(sql):
-    conn.ping()
+    conn = mysql.connect()
     cursor = conn.cursor()
+    conn.ping()
     cursor.execute(sql)
     data = cursor.fetchall()
+    conn.close()
     return data
 
 def queryFirst(sql):
-    conn.ping()
+    conn = mysql.connect()
     cursor = conn.cursor()
+    conn.ping()
     cursor.execute(sql)
     data = cursor.fetchone()
+    conn.close()
     return data
 
 def insert(sql):
-    conn.ping()
+    conn = mysql.connect()
     cursor = conn.cursor()
+    conn.ping()
     cursor.execute(sql)
     conn.commit()
+    conn.close()
 
 def update(sql):
-    conn.ping()
+    conn = mysql.connect()
     cursor = conn.cursor()
+    conn.ping()
     cursor.execute(sql)
     conn.commit()
+    conn.close()
 
 def delete(sql):
-    conn.ping()
+    conn = mysql.connect()
     cursor = conn.cursor()
+    conn.ping()
     cursor.execute(sql)
     conn.commit()
+    conn.close()
 
 def getId(username):
-    conn.ping()
+    conn = mysql.connect()
     cursor = conn.cursor()
+    conn.ping()
     cursor.execute("SELECT id FROM users WHERE username='{}'".format(username))
     data = cursor.fetchone()
+    conn.close()
     return data
 
 def getWalletFromDB(username):
@@ -235,8 +247,8 @@ def home():
     if session.get('logged_in'):
         if request.method == 'GET':
                 userId = getId(session.get('username'))
-                print(userId)
                 activeStocks = query("SELECT * FROM active_stock WHERE user_id={}".format(int(userId[0])))
+                print("--- ACTIVE STOCK ---")
                 print(activeStocks)
                 updatedStockData = getRelevantStockData(activeStocks)
                 return render_template("home.html", _GLOBALS=_GLOBALS, activeStocks=activeStocks, updatedStockData=updatedStockData)
@@ -264,6 +276,8 @@ def getTeam():
         d = getTeamData(session.get('username'))
         if d == False:
             return json.dumps({'Error': 'No Team Found.'}), 404, {'ContentType':'application/json'}
+        print("--- Team Data ---")
+        print(d)
         return json.dumps(d)
 
 @app.route('/logout')
@@ -288,6 +302,12 @@ def buy():
         msft = yf.Ticker(data['ticker'][0])
         a = msft.info
         totalPrice = get_current_price(data['ticker'][0]) * int(data['amount'][0])
+        print("--- TOTAL PRICE ---")
+        print(totalPrice)
+        print("--- WALLET ---")
+        print(user_data[4])
+        print("--- STATEMENT ---")
+        print(totalPrice > user_data[4])
         if totalPrice > user_data[4]:
             transactionOK = False
         # Check if timer allows for transaction when it is implemented here
@@ -348,6 +368,8 @@ def searchQuery():
 def getWallet():
     if session.get('logged_in'):
         wallet =  getWalletFromDB(session.get('username'))
+        print("--- WALLET ---")
+        print(wallet)
         return json.dumps({'wallet': wallet}), 200, {'ContentType':'application/json'}
     else:
         return json.dumps({'success': False}), 403, {'ContentType':'application/json'}

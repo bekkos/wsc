@@ -129,12 +129,5 @@ const getLeagueCode = () => {
     })
 }
 
-setTimeout(() => {
-    getLeague();
-},2000)
-
-setTimeout(() => {
+getLeague();
 getLeagueCode();
-},1000)
-
-getWallet();

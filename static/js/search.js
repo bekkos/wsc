@@ -16,7 +16,7 @@ const enableInput = () => {
     document.body.style.cursor='default';
     canSearch = true;
 }
-const sr = document.getElementById("search-result");
+
 
 
 const search = () => {
@@ -28,13 +28,16 @@ const search = () => {
         pCalc.innerHTML = "Price for buy order: $ " + parseFloat(price) * parseInt(amount);
     },100)
     const ticker = document.getElementById("search-box").value;
+    console.log("Fetched Ticker: ");
+    console.log(ticker);
     data = {
         'ticker': ticker
     }
-    
+    let sr = document.getElementById("search-result");    
     $.post("/query", data, (r) => {
         console.log("ran");
         const response = jQuery.parseJSON(r);
+        console.log(response);
         sr.innerHTML = `
         <div class="display bg-secondary">
             <h1 class="text-primary tsize-2">${response['info']['longName']}</h1>
